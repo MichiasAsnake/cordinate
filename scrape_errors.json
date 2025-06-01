@@ -1,0 +1,49 @@
+[
+  {
+    "job": {
+      "jobNumber": "50815",
+      "customer": {
+        "name": "Canary LLC"
+      },
+      "order": {
+        "order_number": "",
+        "title": "DATABRICKS SCARVES\n        \n            Bagging106\n            CR53\n            EM53\n            Misc53",
+        "status": "Approved",
+        "ship_date": null,
+        "images": [
+          {
+            "asset_tag": "CR11182",
+            "thumbnail_url": "https://decopressus.blob.core.windows.net/decopressus-private/assets/CR/11100/CR11182/thumbnails/502492/CR11182_50.png?sv=2021-10-04&spr=https&se=2025-06-02T06:56:57Z&sr=b&sp=r&sig=Z50z4IzSBZCUVenqVHPX02T9S4gzFehfmY1aOarqei8%3D",
+            "high_res_url": "/cdn/asset/CR11182/0/Icon",
+            "thumbnail_base_path": "/decopressus-private/assets/CR/11100/CR11182/thumbnails/502492/CR11182_50.png",
+            "high_res_base_path": "/cdn/asset/CR11182/0/Icon"
+          }
+        ]
+      },
+      "tags": [
+        {
+          "code": "BAGGING",
+          "quantity": 106
+        },
+        {
+          "code": "CR",
+          "quantity": 53
+        },
+        {
+          "code": "EM",
+          "quantity": 53
+        },
+        {
+          "code": "MISC",
+          "quantity": 53
+        }
+      ],
+      "jobDescriptions": []
+    },
+    "error": {
+      "message": "Job validation failed: Order number is required",
+      "category": "validation",
+      "stack": "Error: Job validation failed: Order number is required\n    at saveScrapedJob (file:///C:/Users/get2damoney/Desktop/cordinate/dist/lib/db.js:334:19)\n    at saveScrapedJobs (file:///C:/Users/get2damoney/Desktop/cordinate/dist/lib/db.js:481:34)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async run (file:///C:/Users/get2damoney/Desktop/cordinate/dist/scrape.js:951:24)"
+    }
+  }
+]

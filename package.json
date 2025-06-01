@@ -2,23 +2,52 @@
   "name": "cordinate",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scrape:build": "tsc -p tsconfig.build.json && node scripts/fix-imports.cjs",
+    "scrape:start": "node dist/scrape.js",
+    "scrape": "npm run scrape:build && npm run scrape:start"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.3"
+    "@azure/storage-blob": "^12.27.0",
+    "@neondatabase/serverless": "^1.0.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-icons": "^1.3.2",
+    "@radix-ui/react-select": "^2.2.5",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-toast": "^1.2.14",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.44.1",
+    "geist": "^1.4.2",
+    "lucide-react": "^0.511.0",
+    "next": "15.3.0",
+    "next-themes": "^0.4.6",
+    "pg": "^8.16.0",
+    "playwright": "^1.42.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "tailwind-merge": "^3.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@playwright/test": "^1.52.0",
+    "@shadcn/ui": "^0.0.4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@types/pg": "^8.15.2",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "drizzle-kit": "^0.31.1",
+    "eslint": "^8",
+    "eslint-config-next": "15.3.0",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }

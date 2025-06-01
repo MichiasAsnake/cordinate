@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ADD COLUMN "high_res_url" text;

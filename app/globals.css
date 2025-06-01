@@ -1,9 +1,6 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme inline {
   --color-background: var(--background);
@@ -12,15 +9,184 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 24 9.8% 10%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.7% 82.9%;
+    --radius: 0.5rem;
+  }
+
+  .berry {
+    --background: 340 50% 15%;
+    --foreground: 340 10% 90%;
+    --card: 340 45% 20%;
+    --card-foreground: 340 10% 90%;
+    --popover: 340 45% 20%;
+    --popover-foreground: 340 10% 90%;
+    --primary: 340 80% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 340 40% 25%;
+    --secondary-foreground: 340 10% 90%;
+    --muted: 340 35% 30%;
+    --muted-foreground: 340 10% 70%;
+    --accent: 340 60% 35%;
+    --accent-foreground: 340 10% 90%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 340 35% 30%;
+    --input: 340 35% 30%;
+    --ring: 340 80% 60%;
+    --radius: 0.5rem;
+  }
+
+  .mochi {
+    --background: 160 40% 15%;
+    --foreground: 160 10% 90%;
+    --card: 160 35% 20%;
+    --card-foreground: 160 10% 90%;
+    --popover: 160 35% 20%;
+    --popover-foreground: 160 10% 90%;
+    --primary: 160 60% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 30% 25%;
+    --secondary-foreground: 160 10% 90%;
+    --muted: 160 25% 30%;
+    --muted-foreground: 160 10% 70%;
+    --accent: 160 45% 35%;
+    --accent-foreground: 160 10% 90%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 160 25% 30%;
+    --input: 160 25% 30%;
+    --ring: 160 60% 40%;
+    --radius: 0.5rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Light mode scrollbar */
+:root {
+  scrollbar-color: hsl(var(--muted)) hsl(var(--background));
+  scrollbar-width: thin;
+}
+
+:root::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+:root::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+:root::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 6px;
+  border: 3px solid hsl(var(--background));
+}
+
+:root::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Dark mode scrollbar */
+.dark {
+  scrollbar-color: hsl(var(--muted)) hsl(var(--background));
+}
+
+.dark::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.dark::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border: 3px solid hsl(var(--background));
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Berry mode scrollbar */
+.berry {
+  scrollbar-color: hsl(var(--muted)) hsl(var(--background));
+}
+
+.berry::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.berry::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border: 3px solid hsl(var(--background));
+}
+
+.berry::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
+
+/* Mochi mode scrollbar */
+.mochi {
+  scrollbar-color: hsl(var(--muted)) hsl(var(--background));
+}
+
+.mochi::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.mochi::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border: 3px solid hsl(var(--background));
+}
+
+.mochi::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
 }

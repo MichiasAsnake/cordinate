@@ -1,0 +1,246 @@
+{
+  "allImageContainers": [],
+  "allImages": [
+    {
+      "index": 0,
+      "src": "https://intranet.decopress.com/resources/megamenu/images/control_mark_white.png",
+      "alt": "Control by Codewolf",
+      "className": "",
+      "parentElement": {
+        "tagName": "A",
+        "className": "unselectable",
+        "dataAttributes": {}
+      },
+      "isThumbnail": false,
+      "isBlob": false
+    },
+    {
+      "index": 1,
+      "src": "https://intranet.decopress.com/resources/megamenu/images/Control_monocrome_white.png",
+      "alt": "",
+      "className": "",
+      "parentElement": {
+        "tagName": "A",
+        "className": "unselectable",
+        "dataAttributes": {}
+      },
+      "isThumbnail": false,
+      "isBlob": false
+    },
+    {
+      "index": 2,
+      "src": "https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/thumbnails/504256/EM12989_50.png?sv=2021-10-04&spr=https&se=2025-06-02T06:56:29Z&sr=b&sp=r&sig=Rb7itfoeFl%2F%2B4NJEvu%2BfRY5eNfL68A37D7y4mfOQhCo%3D",
+      "alt": "",
+      "className": "shadow-bounce",
+      "parentElement": {
+        "tagName": "A",
+        "className": "d-inline-block",
+        "dataAttributes": {
+          "data-fancybox": "gallery",
+          "data-caption": "<div class=\"asset-caption\"><h1>EM12989</h1><p>YATCH ROCK </p></div>"
+        }
+      },
+      "isThumbnail": true,
+      "isBlob": true
+    }
+  ],
+  "allLinks": [
+    {
+      "index": 0,
+      "href": "https://intranet.decopress.com/default.aspx",
+      "text": "",
+      "hasImage": true,
+      "innerHTML": "<img src=\"/resources/megamenu/images/control_mark_white.png\" alt=\"Control by Codewolf\">..."
+    },
+    {
+      "index": 1,
+      "href": "https://www.codewolf.co.nz/",
+      "text": "",
+      "hasImage": true,
+      "innerHTML": "<img src=\"/resources/megamenu/images/Control_monocrome_white.png\">..."
+    },
+    {
+      "index": 2,
+      "href": "https://intranet.decopress.com/Jobs/job.aspx?ID=50772#",
+      "text": "EM12989",
+      "hasImage": false,
+      "parentAssetTag": "EM12989",
+      "innerHTML": "EM12989..."
+    },
+    {
+      "index": 3,
+      "href": "https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/EM12989.png?sv=2021-10-04&spr=https&se=2025-06-02T07:32:28Z&sr=b&sp=r&sig=i80rjsgXYczBQ%2BWu7asJ1c%2BXW2SCNOmN%2FqnFlB%2BcaBk%3D",
+      "text": "",
+      "hasImage": true,
+      "parentAssetTag": "EM12989",
+      "innerHTML": "\n                            <img class=\"shadow-bounce\" data-url=\"https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/thumbnails/504256/EM12989_50.png?sv=2021-10-04&a..."
+    },
+    {
+      "index": 4,
+      "href": "https://intranet.decopress.com/Jobs/job.aspx?ID=50772#",
+      "text": "SETEM",
+      "hasImage": false,
+      "parentAssetTag": "SETEM",
+      "innerHTML": "SETEM..."
+    }
+  ],
+  "joblineContainers": [
+    {
+      "index": 0,
+      "assetTag": "GSORT",
+      "images": [],
+      "links": [],
+      "fullHTML": "<div class=\"js-jobline-asset-image-container\" data-asset-tag=\"GSORT\">\n                    \n                        \n                    \n                    \n                </div>"
+    },
+    {
+      "index": 1,
+      "assetTag": "EM12989",
+      "images": [
+        {
+          "src": "https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/thumbnails/504256/EM12989_50.png?sv=2021-10-04&spr=https&se=2025-06-02T06:56:29Z&sr=b&sp=r&sig=Rb7itfoeFl%2F%2B4NJEvu%2BfRY5eNfL68A37D7y4mfOQhCo%3D",
+          "isThumbnail": true
+        }
+      ],
+      "links": [
+        {
+          "href": "https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/EM12989.png?sv=2021-10-04&spr=https&se=2025-06-02T07:32:28Z&sr=b&sp=r&sig=i80rjsgXYczBQ%2BWu7asJ1c%2BXW2SCNOmN%2FqnFlB%2BcaBk%3D",
+          "hasImage": true
+        }
+      ],
+      "fullHTML": "<div class=\"js-jobline-asset-image-container\" data-asset-tag=\"EM12989\">\n                        <a href=\"https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/EM12989.png?sv=2021-10-04&amp;spr=https&amp;se=2025-06-02T07:32:28Z&amp;sr=b&amp;sp=r&amp;sig=i80rjsgXYczBQ%2BWu7asJ1c%2BXW2SCNOmN%2FqnFlB%2BcaBk%3D\" data-fancybox=\"gallery\" use-internal-previewer=\"true\" class=\"d-inline-block\" data-caption=\"<div class=&quot;asset-caption&quot;><h1>EM12989</h1><p>YATCH ROCK </p></div>\">\n                            <img class=\"shadow-bounce\" data-url=\"https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/thumbnails/504256/EM12989_50.png?sv=2021-10-04&amp;spr=https&amp;se=2025-06-02T06:56:29Z&amp;sr=b&amp;sp=r&amp;sig=Rb7itfoeFl%2F%2B4NJEvu%2BfRY5eNfL68A37D7y4mfOQhCo%3D\" src=\"https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/thumbnails/504256/EM12989_50.png?sv=2021-10-04&amp;spr=https&amp;se=2025-06-02T06:56:29Z&amp;sr=b&amp;sp=r&amp;sig=Rb7itfoeFl%2F%2B4NJEvu%2BfRY5eNfL68A37D7y4mfOQhCo%3D\">\n                        </a>\n                    \n                    \n                </div>"
+    },
+    {
+      "index": 2,
+      "assetTag": "SETEM",
+      "images": [],
+      "links": [],
+      "fullHTML": "<div class=\"js-jobline-asset-image-container\" data-asset-tag=\"SETEM\">\n                    \n                        \n                    \n                    \n                </div>"
+    }
+  ],
+  "assetContainers": [],
+  "pageStructure": {
+    ".js-jobline-asset-image-container": {
+      "count": 3,
+      "elements": [
+        {
+          "index": 0,
+          "tagName": "DIV",
+          "className": "js-jobline-asset-image-container",
+          "dataAttributes": {
+            "data-asset-tag": "GSORT"
+          },
+          "innerHTML": "\n                    \n                        \n                    \n                    \n                ...",
+          "hasImages": 0,
+          "hasLinks": 0
+        },
+        {
+          "index": 1,
+          "tagName": "DIV",
+          "className": "js-jobline-asset-image-container",
+          "dataAttributes": {
+            "data-asset-tag": "EM12989"
+          },
+          "innerHTML": "\n                        <a href=\"https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/EM12989.png?sv=2021-10-04&amp;spr=https&amp;se=2025-06-02T07:32:28Z&amp;sr=b&amp;sp=r&amp;sig=i80rjsgXYczBQ%2BWu7asJ1c%2BXW2SCNOmN%2FqnFlB%2BcaBk%3D\" data-fancybox=\"gallery\" use-internal-previewer=\"true\" class=\"d-inline-block\" data-caption=\"<div class=&quot;asset-caption&quot;><h1>EM12989</h1><p>YATCH ROCK </p></div>\">\n                            <img class=\"shadow-bounce\" data...",
+          "hasImages": 1,
+          "hasLinks": 1
+        },
+        {
+          "index": 2,
+          "tagName": "DIV",
+          "className": "js-jobline-asset-image-container",
+          "dataAttributes": {
+            "data-asset-tag": "SETEM"
+          },
+          "innerHTML": "\n                    \n                        \n                    \n                    \n                ...",
+          "hasImages": 0,
+          "hasLinks": 0
+        }
+      ]
+    },
+    "[data-asset-tag]": {
+      "count": 5,
+      "elements": [
+        {
+          "index": 0,
+          "tagName": "DIV",
+          "className": "js-jobline-asset-image-container",
+          "dataAttributes": {
+            "data-asset-tag": "GSORT"
+          },
+          "innerHTML": "\n                    \n                        \n                    \n                    \n                ...",
+          "hasImages": 0,
+          "hasLinks": 0
+        },
+        {
+          "index": 1,
+          "tagName": "A",
+          "className": "js-view-asset js-action-link",
+          "dataAttributes": {
+            "data-asset-tag": "EM12989",
+            "data-action": "view-asset"
+          },
+          "innerHTML": "EM12989...",
+          "hasImages": 0,
+          "hasLinks": 0
+        },
+        {
+          "index": 2,
+          "tagName": "DIV",
+          "className": "js-jobline-asset-image-container",
+          "dataAttributes": {
+            "data-asset-tag": "EM12989"
+          },
+          "innerHTML": "\n                        <a href=\"https://decopressus.blob.core.windows.net/decopressus-private/assets/EM/12900/EM12989/EM12989.png?sv=2021-10-04&amp;spr=https&amp;se=2025-06-02T07:32:28Z&amp;sr=b&amp;sp=r&amp;sig=i80rjsgXYczBQ%2BWu7asJ1c%2BXW2SCNOmN%2FqnFlB%2BcaBk%3D\" data-fancybox=\"gallery\" use-internal-previewer=\"true\" class=\"d-inline-block\" data-caption=\"<div class=&quot;asset-caption&quot;><h1>EM12989</h1><p>YATCH ROCK </p></div>\">\n                            <img class=\"shadow-bounce\" data...",
+          "hasImages": 1,
+          "hasLinks": 1
+        },
+        {
+          "index": 3,
+          "tagName": "A",
+          "className": "js-view-asset js-action-link",
+          "dataAttributes": {
+            "data-asset-tag": "SETEM",
+            "data-action": "view-asset"
+          },
+          "innerHTML": "SETEM...",
+          "hasImages": 0,
+          "hasLinks": 0
+        },
+        {
+          "index": 4,
+          "tagName": "DIV",
+          "className": "js-jobline-asset-image-container",
+          "dataAttributes": {
+            "data-asset-tag": "SETEM"
+          },
+          "innerHTML": "\n                    \n                        \n                    \n                    \n                ...",
+          "hasImages": 0,
+          "hasLinks": 0
+        }
+      ]
+    },
+    ".job-joblines-container": {
+      "count": 2,
+      "elements": [
+        {
+          "index": 0,
+          "tagName": "DIV",
+          "className": "job-joblines-container",
+          "dataAttributes": {},
+          "innerHTML": "\n                        <div class=\"job-joblines-actions row\">\n                            <div id=\"addShipment\" class=\"job-jobline-action btn btn-primary js-add-delivery-address\"><i class=\"fa fa-plus\"></i>&nbsp;&nbsp;Add Shipment</div>\n                        </div>\n                    ...",
+          "hasImages": 0,
+          "hasLinks": 0
+        },
+        {
+          "index": 1,
+          "tagName": "DIV",
+          "className": "job-joblines-container",
+          "dataAttributes": {},
+          "innerHTML": "\n                <div class=\"job-joblines-list-container\" style=\"\"><table class=\"job-joblines-list\">\n    <tbody>\n        <tr>\n            <td class=\"jobline-program\">Asset/SKU</td>\n            <td class=\"jobline-description\">Description</td>\n            <td class=\"jobline-image\">Image</td>\n            <td class=\"jobline-quantity px-1 text-right\">Qty</td>\n            <td class=\"jobline-actual-quantity jobline-despatch-cell\" style=\"display: none;\">Actual</td>\n            <td class=\"jobline-machine...",
+          "hasImages": 1,
+          "hasLinks": 4
+        }
+      ]
+    }
+  }
+}

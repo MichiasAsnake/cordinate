@@ -2,6 +2,7 @@
 export { JobHeader } from "./JobHeader";
 export type { default as JobHeaderProps } from "./JobHeader";
 export { CustomerInfo } from "./CustomerInfo";
+export { OrderItems } from "./OrderItems";
 
 // Future exports will be added here as we build more components:
 // export { CustomerInfo } from './CustomerInfo';

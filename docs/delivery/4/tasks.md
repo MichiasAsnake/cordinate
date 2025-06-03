@@ -13,11 +13,11 @@ This document lists all tasks associated with PBI 4.
 | 4-3     | [Create database migration for enhanced job data](./4-3.md) | Done     | Migrate existing job records to support new schema fields                   |
 | 4-4     | [Build JobHeader component](./4-4.md)                       | Done     | Display job number, title, status badge, and due date                       |
 | 4-5     | [Build CustomerInfo component](./4-5.md)                    | Done     | Display customer contact information with click-to-contact functionality    |
-| 4-6     | [Build OrderItems component](./4-6.md)                      | Agreed   | Display order line items in table format with asset tags and quantities     |
+| 4-6     | [Build OrderItems component](./4-6.md)                      | Done     | Display order line items in table format with asset tags and quantities     |
 | 4-7     | [Build ProcessTags component](./4-7.md)                     | Proposed | Display process tags with existing visual styling                           |
 | 4-8     | [Build FilesSection component](./4-8.md)                    | Proposed | Display file attachments and images in grid layout with preview             |
 | 4-9     | [Create OrderDetailsCard container](./4-9.md)               | Proposed | Left column container component integrating all metadata components         |
-| 4-10    | [Create comments database schema](./4-10.md)                | Proposed | Database tables for comments, file attachments, and mentions                |
+| 4-10    | [Create comments database schema](./4-10.md)                | Agreed   | Database tables for comments, file attachments, and mentions                |
 | 4-11    | [Build Comment component](./4-11.md)                        | Proposed | Individual comment display with author, timestamp, and content              |
 | 4-12    | [Build CommentComposer component](./4-12.md)                | Proposed | Rich text input for creating new comments                                   |
 | 4-13    | [Build CommunicationThread container](./4-13.md)            | Proposed | Right column container for comments and thread management                   |

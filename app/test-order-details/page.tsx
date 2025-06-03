@@ -3,6 +3,7 @@
 import React from "react";
 import { JobHeader } from "@/app/components/order-details/JobHeader";
 import { CustomerInfo } from "@/app/components/order-details/CustomerInfo";
+import { OrderItems } from "@/app/components/order-details/OrderItems";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { JobDataEnhanced } from "@/lib/types/JobDataEnhanced";
@@ -177,117 +178,6 @@ const testJobData: JobDataEnhanced = {
   ],
 };
 
-function PlaceholderOrderItems() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg flex items-center justify-between">
-          Order Line Items
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="text-xs">
-              {testJobData.order.line_items.length} items
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              ${(testJobData.order.total_value || 0).toFixed(2)} total
-            </Badge>
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {testJobData.order.line_items.map((item, index) => (
-            <div
-              key={index}
-              className="border rounded-lg p-4 hover:bg-muted/30 transition-colors"
-            >
-              <div className="flex gap-4">
-                {/* Product Image */}
-                <div className="w-20 h-20 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <div className="text-xs text-center text-muted-foreground">
-                    <div className="text-lg mb-1">👕</div>
-                    <div>{item.specifications?.size || "IMG"}</div>
-                  </div>
-                </div>
-
-                {/* Item Details */}
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <div className="font-medium text-base">
-                        {item.description}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        SKU: {item.asset_sku} • Asset: {item.asset_tag}
-                      </div>
-                    </div>
-                    <Badge
-                      variant={
-                        item.status === "in_progress" ? "default" : "secondary"
-                      }
-                    >
-                      {item.status.replace("_", " ")}
-                    </Badge>
-                  </div>
-
-                  {/* Specifications Grid */}
-                  {item.specifications && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                      {Object.entries(item.specifications).map(
-                        ([key, value]) => (
-                          <div key={key} className="text-xs">
-                            <span className="font-medium text-muted-foreground">
-                              {key}:
-                            </span>
-                            <span className="ml-1">{value}</span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  )}
-
-                  {/* Pricing and Quantity */}
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Qty:</span>
-                        <span className="ml-1 font-medium">
-                          {item.quantity}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Unit:</span>
-                        <span className="ml-1 font-medium">
-                          ${item.unit_cost?.toFixed(2) || "0.00"}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Total:</span>
-                        <span className="ml-1 font-semibold text-green-600">
-                          ${item.total_cost?.toFixed(2) || "0.00"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Comments */}
-                  {item.comments && (
-                    <div className="mt-3 text-xs bg-orange-50 dark:bg-orange-950/20 p-2 rounded border-l-2 border-orange-400">
-                      <span className="font-medium">Note:</span> {item.comments}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <Badge variant="outline" className="mt-4">
-          Task 4-6: OrderItems Component
-        </Badge>
-      </CardContent>
-    </Card>
-  );
-}
-
 function PlaceholderFilesSection() {
   return (
     <Card>
@@ -458,7 +348,7 @@ export default function TestOrderDetailsPage() {
                 Order Details - Test Interface
               </h1>
               <p className="text-muted-foreground">
-                Development preview • CustomerInfo component implemented
+                Development preview • OrderItems component implemented
               </p>
             </div>
             <Badge variant="outline" className="text-sm">
@@ -487,7 +377,7 @@ export default function TestOrderDetailsPage() {
         <div className="grid grid-cols-1 xl:grid-cols-7 gap-6">
           {/* Left Column - Order Metadata (3/7 ≈ 43%) */}
           <div className="xl:col-span-3 space-y-6">
-            <PlaceholderOrderItems />
+            <OrderItems orderItems={testJobData.order.line_items} />
             <PlaceholderFilesSection />
           </div>
 
@@ -500,7 +390,7 @@ export default function TestOrderDetailsPage() {
         {/* Development Progress - Full Width */}
         <div className="mt-8 p-6 border rounded-lg bg-muted/50">
           <h3 className="font-semibold mb-4">
-            Development Progress • CustomerInfo Component Implemented
+            Development Progress • OrderItems Component Implemented
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div className="space-y-3">
@@ -511,12 +401,12 @@ export default function TestOrderDetailsPage() {
                 <li>• Task 4-3: Database migration</li>
                 <li>• Task 4-4: JobHeader (with process tags)</li>
                 <li>• Task 4-5: CustomerInfo (click-to-contact)</li>
+                <li>• Task 4-6: OrderItems (with photos/prices)</li>
               </ul>
             </div>
             <div className="space-y-3">
               <h4 className="font-medium text-blue-600">🔄 In Progress</h4>
               <ul className="text-sm space-y-1">
-                <li>• Task 4-6: OrderItems (with photos/prices)</li>
                 <li>• Task 4-7: FilesSection</li>
               </ul>
             </div>

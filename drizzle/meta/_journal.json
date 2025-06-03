@@ -64,6 +64,13 @@
       "when": 1748827153718,
       "tag": "0008_cold_mimic",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1748930687598,
+      "tag": "0009_confused_rage",
+      "breakpoints": true
     }
   ]
 }

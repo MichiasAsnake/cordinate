@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ADD COLUMN "job_number" varchar(50) NOT NULL;

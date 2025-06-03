@@ -543,6 +543,7 @@ export async function saveScrapedJob(orgName: string, jobData: ScrapedJob) {
       try {
         // Prepare update data conditionally including created_at
         const updateData: any = {
+          job_number: sanitizedJobData.jobNumber,
           title: sanitizedJobData.order.title,
           organization_id: org.id,
           customer_id: customer.id,
@@ -581,6 +582,7 @@ export async function saveScrapedJob(orgName: string, jobData: ScrapedJob) {
       try {
         // Prepare insert data conditionally including created_at
         const insertData: any = {
+          job_number: sanitizedJobData.jobNumber,
           order_number: sanitizedJobData.order.order_number,
           title: sanitizedJobData.order.title,
           organization_id: org.id,

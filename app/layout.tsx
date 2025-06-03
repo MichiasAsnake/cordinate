@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${regular.variable} ${medium.variable} font-regular antialiased bg-background text-foreground`}
+        className={`${regular.variable} ${medium.variable} font-sans antialiased bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"

@@ -5,8 +5,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-regular);
+  --font-mono: var(--font-medium);
 }
 
 @layer base {
@@ -101,14 +101,14 @@
     --ring: 160 60% 40%;
     --radius: 0.5rem;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
+    font-family: var(--font-regular), system-ui, sans-serif;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-regular), system-ui, sans-serif;
   }
 }
 

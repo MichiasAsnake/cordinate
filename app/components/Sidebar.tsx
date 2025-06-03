@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getTags } from "../workflow/actions";
-import { useRecentOrders } from "@/lib/hooks/useRecentOrders";
 import { Badge } from "@/components/ui/badge";
 
 interface Tag {
@@ -27,22 +26,27 @@ const tagAbbreviations: Record<string, string> = {
   Miscellaneous: "MISC",
 };
 
-interface RecentOrder {
-  id: number;
-  orderNumber: string;
-  status: string;
-  mainTag?: string;
-  title?: string;
-}
-
 export default function Sidebar() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { recentOrders } = useRecentOrders();
+
+  // Parse selected tags from URL on mount and when URL changes
+  useEffect(() => {
+    const urlTags = searchParams.get("tags");
+    if (urlTags) {
+      const parsedTags = urlTags.includes(",")
+        ? urlTags.split(",").filter(Boolean)
+        : [urlTags];
+      setSelectedTags(parsedTags);
+    } else {
+      setSelectedTags([]);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -65,137 +69,156 @@ export default function Sidebar() {
     fetchTags();
   }, []);
 
+  const handleTagClick = (tagName: string) => {
+    let newSelectedTags: string[];
+
+    if (selectedTags.includes(tagName)) {
+      // Remove tag if already selected
+      newSelectedTags = selectedTags.filter((tag) => tag !== tagName);
+    } else {
+      // Add tag if not selected
+      newSelectedTags = [...selectedTags, tagName];
+    }
+
+    // Update URL with new tag selection
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (newSelectedTags.length > 0) {
+      params.set("tags", newSelectedTags.join(","));
+    } else {
+      params.delete("tags");
+    }
+
+    // Navigate to workflow page with updated parameters
+    router.push(`/workflow?${params.toString()}`);
+  };
+
+  const handleAllOrdersClick = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("tags");
+    router.push(`/workflow?${params.toString()}`);
+  };
+
   if (loading && !tags.length) {
-    return <div className="p-4 text-muted-foreground">Loading tags...</div>;
+    return <div className="p-6 text-sm text-muted-foreground">Loading...</div>;
   }
 
   if (error) {
-    return <div className="p-4 text-destructive">Error: {error}</div>;
+    return <div className="p-6 text-sm text-destructive">Error: {error}</div>;
   }
 
   return (
-    <div className="w-64 border-r bg-card p-6 flex flex-col justify-between h-full overflow-y-auto">
-      <div className="space-y-8">
-        {/* Workflow Section */}
-        <div>
-          <h2 className="text-sm font-medium text-muted-foreground mb-3">
-            Workflow
-          </h2>
-          <div className="space-y-2">
-            <Link
-              href="/workflow"
-              className={`block w-full text-left ${
-                pathname === "/workflow" && !searchParams.get("tag")
-                  ? "text-primary"
-                  : "text-foreground"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-medium">All</span>
-                <Badge variant="secondary" className="text-sm">
-                  {recentOrders.length}
-                </Badge>
-              </div>
-            </Link>
-          </div>
+    <div className="w-64 border-r bg-card h-full overflow-y-auto">
+      <div className="space-y-6">
+        {/* Branding Section */}
+        <div className="p-6 pb-0">
+          <Link
+            href="/"
+            className="flex items-center gap-3 hover:opacity-75 transition-opacity"
+          >
+            {/* Space for logo */}
+            <img
+              src="/cordinate icon.png"
+              alt="Cordinate"
+              width={32}
+              height={32}
+            />
+            <h1 className="text-lg font-medium text-foreground">Cordinate</h1>
+          </Link>
         </div>
 
-        {/* Tags Section */}
-        <div>
-          <h2 className="text-sm font-medium text-muted-foreground mb-3">
-            Tags
-          </h2>
-          <div className="space-y-3">
-            {tags.map((tag) => (
-              <Link
-                key={tag.code}
-                href={`/workflow?tag=${tag.name}`}
-                className={`block w-full text-left ${
-                  pathname === "/workflow" &&
-                  searchParams.get("tag") === tag.name
-                    ? "text-primary"
-                    : "text-foreground"
+        <div className="px-6 space-y-6">
+          {/* Workflow Section */}
+          <div>
+            <h2 className="text-sm font-medium text-muted-foreground mb-4">
+              Workflow
+            </h2>
+            <div className="space-y-1">
+              <button
+                onClick={handleAllOrdersClick}
+                className={`block w-full text-left py-2 px-3 rounded-md transition-colors ${
+                  pathname === "/workflow" && selectedTags.length === 0
+                    ? "bg-accent text-accent-foreground"
+                    : "text-foreground hover:bg-accent/50"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">All Orders</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Tags Section - Multi-select */}
+          <div className="space-y-1">
+            {tags.map((tag) => {
+              const isSelected = selectedTags.includes(tag.name);
+
+              return (
+                <button
+                  key={tag.code}
+                  onClick={() => handleTagClick(tag.name)}
+                  className={`block w-full text-left py-2 px-3 rounded-md transition-all duration-200 ${
+                    isSelected
+                      ? "bg-accent text-accent-foreground shadow-sm border border-primary/20"
+                      : "text-foreground hover:bg-accent/50"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
                     <div
-                      className="w-3 h-3 rounded-full"
+                      className={`w-2 h-2 rounded-full flex-shrink-0 transition-all duration-200 ${
+                        isSelected
+                          ? "ring-2 ring-primary/30 ring-offset-1 ring-offset-background"
+                          : ""
+                      }`}
                       style={{ backgroundColor: tag.color }}
                     />
-                    <span className="text-lg font-medium">{tag.name}</span>
+                    <span
+                      className={`text-sm font-medium ${
+                        isSelected ? "font-semibold" : ""
+                      }`}
+                    >
+                      {tag.name}
+                    </span>
+                    {isSelected && (
+                      <Badge
+                        variant="secondary"
+                        className="ml-auto text-xs px-1.5 py-0.5"
+                      >
+                        ✓
+                      </Badge>
+                    )}
                   </div>
-                </div>
-              </Link>
-            ))}
+                </button>
+              );
+            })}
           </div>
-        </div>
 
-        {/* Recent Orders Section */}
-        <div>
-          <h2 className="text-sm font-medium text-muted-foreground mb-3">
-            Recent Orders
-          </h2>
-          <div className="space-y-3">
-            {recentOrders.length > 0 ? (
-              recentOrders.map((order) => (
-                <Link
-                  key={order.id}
-                  href={`/workflow?tag=${order.mainTag}`}
-                  className="block w-full text-left text-foreground"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`w-3 h-3 rounded-full ${
-                          order.status === "pending"
-                            ? "bg-yellow-500"
-                            : order.status === "in_progress"
-                            ? "bg-blue-500"
-                            : order.status === "completed"
-                            ? "bg-green-500"
-                            : order.status === "cancelled"
-                            ? "bg-red-500"
-                            : "bg-muted"
-                        }`}
-                      />
-                      <span className="text-lg font-medium">
-                        #{order.orderNumber}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground">No recent orders.</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* User Info Section */}
-      <div className="flex items-center gap-2 border-t pt-4 mt-8">
-        <div className="w-8 h-8 bg-muted rounded-full"></div>
-        <div>
-          <div className="text-sm font-semibold text-foreground">
-            Alex Turner
-          </div>
-          <div className="text-xs text-muted-foreground">Production Lead</div>
-        </div>
-        <div className="ml-auto">
-          <svg
-            className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
+          {/* Selected Tags Summary */}
+          {selectedTags.length > 0 && (
+            <div className="pt-2 border-t border-border">
+              <div className="text-xs text-muted-foreground mb-2">
+                Active Filters ({selectedTags.length})
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {selectedTags.map((tagName) => {
+                  const tag = tags.find((t) => t.name === tagName);
+                  return (
+                    <Badge
+                      key={tagName}
+                      variant="secondary"
+                      className="text-xs cursor-pointer hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                      onClick={() => handleTagClick(tagName)}
+                      title="Click to remove"
+                    >
+                      {tag?.code || tagName}
+                      <span className="ml-1">×</span>
+                    </Badge>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

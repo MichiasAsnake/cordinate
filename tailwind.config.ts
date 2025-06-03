@@ -16,11 +16,13 @@ const config: Config = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      sans: ["var(--font-regular)", "system-ui", "sans-serif"],
+      mono: ["var(--font-medium)", "monospace"],
+      regular: ["var(--font-regular)", "system-ui", "sans-serif"],
+      medium: ["var(--font-medium)", "system-ui", "sans-serif"],
+    },
     extend: {
-      fontFamily: {
-        regular: ["var(--font-regular)"],
-        medium: ["var(--font-medium)"],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

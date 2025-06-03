@@ -57,6 +57,13 @@
       "when": 1748809162617,
       "tag": "0007_clammy_baron_strucker",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1748827153718,
+      "tag": "0008_cold_mimic",
+      "breakpoints": true
     }
   ]
 }

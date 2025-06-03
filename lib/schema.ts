@@ -44,6 +44,7 @@ export const customers = pgTable("customers", {
 
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
+  job_number: varchar("job_number", { length: 50 }).notNull(),
   order_number: varchar("order_number", { length: 100 }).notNull().unique(),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description"),

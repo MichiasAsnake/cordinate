@@ -1,11 +1,12 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { orders, users, order_tags, tags } from "@/lib/schema";
-import { desc, eq, and, gte, lte, sql } from "drizzle-orm";
+import { orders, users, order_tags, tags, customers } from "@/lib/schema";
+import { desc, eq, and, gte, lte, sql, inArray } from "drizzle-orm";
 
 interface OrderFilters {
-  tag?: string;
+  tag?: string; // For backwards compatibility with FilterBar
+  tags?: string[]; // For multi-select from Sidebar
   status?: string;
   priority?: string;
   dateRange?: string;
@@ -19,15 +20,18 @@ export async function getOrders(filters: OrderFilters = {}) {
     const baseQuery = db
       .select({
         id: orders.order_number,
+        jobNumber: orders.job_number,
         orderId: orders.id,
         title: orders.title,
         status: orders.status,
         assignedTo: users.name,
+        customerName: customers.name,
         dueDate: orders.ship_date,
         images: orders.images,
       })
       .from(orders)
-      .leftJoin(users, eq(users.id, orders.assigned_to));
+      .leftJoin(users, eq(users.id, orders.assigned_to))
+      .leftJoin(customers, eq(customers.id, orders.customer_id));
 
     // Build where conditions
     const whereConditions = [];
@@ -35,21 +39,44 @@ export async function getOrders(filters: OrderFilters = {}) {
     // Apply search filter
     if (filters.search) {
       const searchTerm = `%${filters.search}%`;
+      console.log(
+        `🔍 Searching across job_number, title, and customer name for: "${filters.search}"`
+      );
       whereConditions.push(
-        sql`(${orders.order_number} ILIKE ${searchTerm} OR ${orders.title} ILIKE ${searchTerm})`
+        sql`(${orders.job_number} ILIKE ${searchTerm} OR ${orders.title} ILIKE ${searchTerm} OR ${customers.name} ILIKE ${searchTerm})`
       );
     }
 
-    // Apply tag filter
-    if (filters.tag) {
-      whereConditions.push(
-        sql`EXISTS (
+    // Combine single tag and multiple tags filters
+    const allTags: string[] = [];
+    if (filters.tag) allTags.push(filters.tag);
+    if (filters.tags && filters.tags.length > 0) allTags.push(...filters.tags);
+
+    // Apply tags filter (support multiple tags with AND logic - jobs must have ALL selected tags)
+    if (allTags.length > 0) {
+      // For AND logic, we need each tag to exist, so we create separate EXISTS conditions
+      // and combine them with AND instead of OR
+      const tagConditions = allTags.map(
+        (tagName) =>
+          sql`EXISTS (
           SELECT 1 FROM ${order_tags}
           INNER JOIN ${tags} ON ${tags.id} = ${order_tags.tag_id}
           WHERE ${order_tags.order_id} = ${orders.id}
-          AND ${tags.name} = ${filters.tag}
+          AND ${tags.name} = ${tagName}
         )`
       );
+
+      // Combine all tag conditions with AND (each tag must exist)
+      allTags.forEach((tagName) => {
+        whereConditions.push(
+          sql`EXISTS (
+            SELECT 1 FROM ${order_tags}
+            INNER JOIN ${tags} ON ${tags.id} = ${order_tags.tag_id}
+            WHERE ${order_tags.order_id} = ${orders.id}
+            AND ${tags.name} = ${tagName}
+          )`
+        );
+      });
     }
 
     // Apply status filter

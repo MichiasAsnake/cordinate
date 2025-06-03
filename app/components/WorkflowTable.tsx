@@ -23,7 +23,8 @@ interface Tag {
 
 interface WorkflowTableProps {
   orders: Array<{
-    id: string;
+    jobNumber: string;
+    customerName: string;
     title: string;
     status: string;
     assignedTo: string | null;
@@ -173,12 +174,15 @@ export function WorkflowTable({ orders }: WorkflowTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="py-4">Order #</TableHead>
-              <TableHead className="py-4">Images</TableHead>
-              <TableHead className="py-4">Title</TableHead>
-              <TableHead className="py-4">Status</TableHead>
-              <TableHead className="py-4">Assigned To</TableHead>
-              <TableHead className="py-4">
+              <TableHead className="py-5 px-6 w-[100px]">Job #</TableHead>
+              <TableHead className="py-5 px-6 w-[140px]">
+                Customer Name
+              </TableHead>
+              <TableHead className="py-5 px-6 w-[120px]">Images</TableHead>
+              <TableHead className="py-5 px-6">Title</TableHead>
+              <TableHead className="py-5 px-6 w-[130px]">Status</TableHead>
+              <TableHead className="py-5 px-6 w-[120px]">Assigned To</TableHead>
+              <TableHead className="py-5 px-6 w-[140px]">
                 <Button
                   variant="ghost"
                   onClick={handleDueDateSort}
@@ -188,7 +192,7 @@ export function WorkflowTable({ orders }: WorkflowTableProps) {
                   <ArrowUpDown className="h-4 w-4" />
                 </Button>
               </TableHead>
-              <TableHead className="py-4">Tags</TableHead>
+              <TableHead className="py-5 px-6 w-[150px]">Tags</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -198,33 +202,38 @@ export function WorkflowTable({ orders }: WorkflowTableProps) {
               const dueIcon = dueDateIcons[dueInfo.status];
 
               return (
-                <TableRow key={order.id}>
-                  <TableCell className="py-4 font-medium">{order.id}</TableCell>
-                  <TableCell className="py-4">
+                <TableRow key={order.jobNumber} className="hover:bg-muted/50">
+                  <TableCell className="py-6 px-6 font-medium">
+                    {order.jobNumber}
+                  </TableCell>
+                  <TableCell className="py-6 px-6 font-medium">
+                    {order.customerName}
+                  </TableCell>
+                  <TableCell className="py-6 px-6">
                     {order.images && order.images.length > 0 ? (
                       <ImageGallery images={order.images} />
                     ) : (
                       <span className="text-muted-foreground">No images</span>
                     )}
                   </TableCell>
-                  <TableCell className="py-4">{order.title}</TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-6 px-6">{order.title}</TableCell>
+                  <TableCell className="py-6 px-6">
                     <Badge
                       variant="secondary"
                       className={statusStyle.className}
                     >
-                      <span className="text-base">{statusStyle.icon}</span>
+                      <span className="text-base mr-1">{statusStyle.icon}</span>
                       {order.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-6 px-6">
                     {order.assignedTo || "Unassigned"}
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="py-6 px-6">
                     {order.dueDate ? (
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2">
                         <span className={dueIcon.color}>{dueIcon.icon}</span>
-                        <span>
+                        <span className="text-sm">
                           {dueInfo.days === 0
                             ? "Today"
                             : dueInfo.status === "overdue"
@@ -233,16 +242,18 @@ export function WorkflowTable({ orders }: WorkflowTableProps) {
                         </span>
                       </div>
                     ) : (
-                      <span className="text-muted-foreground">No due date</span>
+                      <span className="text-muted-foreground text-sm">
+                        No due date
+                      </span>
                     )}
                   </TableCell>
-                  <TableCell className="py-4">
-                    <div className="flex flex-wrap gap-2">
+                  <TableCell className="py-6 px-6 max-w-[150px]">
+                    <div className="flex flex-wrap gap-1.5 max-w-full">
                       {order.tags.map((tag) => (
                         <Badge
                           key={tag.name}
                           variant="outline"
-                          className="cursor-pointer hover:bg-accent"
+                          className="cursor-pointer hover:bg-accent text-xs px-2 py-1 whitespace-nowrap"
                           style={getTagStyle(tag.color)}
                           onClick={() => handleTagClick(tag.name)}
                         >

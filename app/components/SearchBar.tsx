@@ -16,8 +16,9 @@ export function SearchBar({ className = "" }: SearchBarProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("search") || ""
+    pathname === "/workflow" ? searchParams.get("search") || "" : ""
   );
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const debouncedSearch = useDebounce(searchTerm, 300);
 
   const handleSearch = useCallback(
@@ -39,8 +40,22 @@ export function SearchBar({ className = "" }: SearchBarProps) {
   );
 
   useEffect(() => {
-    handleSearch(debouncedSearch);
-  }, [debouncedSearch, handleSearch]);
+    // Only trigger search if user has interacted with the search bar
+    // or if we're already on the workflow page
+    if (hasUserInteracted || pathname === "/workflow") {
+      handleSearch(debouncedSearch);
+    }
+  }, [debouncedSearch, handleSearch, hasUserInteracted, pathname]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setHasUserInteracted(true);
+  };
+
+  const handleClear = () => {
+    setSearchTerm("");
+    setHasUserInteracted(true);
+  };
 
   return (
     <div className={`relative ${className}`}>
@@ -48,14 +63,14 @@ export function SearchBar({ className = "" }: SearchBarProps) {
         type="text"
         placeholder="Search orders..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={handleInputChange}
         className="pr-10 focus:bg-accent/50"
       />
       {searchTerm && (
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setSearchTerm("")}
+          onClick={handleClear}
           className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
         >
           <X className="h-4 w-4" />

@@ -9,7 +9,7 @@ console.log("ORGANIZATION_NAME:", process.env.ORGANIZATION_NAME ? "Set" : "Not s
 import { chromium } from "playwright";
 import fs from "fs";
 import readline from "readline";
-import { saveScrapedJobs, checkJobExists } from "./lib/db.js";
+import { saveScrapedJobs } from "./lib/db.js";
 // Config for storing user credentials
 const CONFIG_DIR = process.cwd() + "/.config";
 const CREDENTIALS_FILE = CONFIG_DIR + "/credentials.json";
@@ -105,7 +105,7 @@ async function extractListData(row) {
         };
         const getCellAttribute = async (selector, attribute) => {
             try {
-                return await row.$eval(selector, (el) => el.getAttribute(attribute) || "");
+                return await row.$eval(selector, (el, attr) => el.getAttribute(attr) || "", attribute);
             }
             catch (error) {
                 console.warn(`Failed to get cell attribute ${attribute} for ${selector}:`, error);
@@ -581,9 +581,8 @@ async function scrapeJobs(page, currentPageNumber = 1) {
         await page.waitForSelector("#jobStatusListResults");
         const jobs = [];
         const failedJobs = [];
-        const skippedJobs = [];
         let processedCount = 0;
-        // Get organization name for job existence checks
+        // Get organization name for database operations
         const envOrgName = process.env.ORGANIZATION_NAME || "DecoPress";
         // Add space programmatically if needed: "DecoPress" -> "Deco Press"
         const orgName = envOrgName === "DecoPress" ? "Deco Press" : envOrgName;
@@ -620,22 +619,6 @@ async function scrapeJobs(page, currentPageNumber = 1) {
             processedCount++;
             try {
                 console.log(`🔄 Processing job ${jobNumber} (${processedCount}/${currentJobRows.length})...`);
-                // Check if this job already exists in the database with images
-                console.log(`🔍 Checking if job ${jobNumber} (order: ${orderNumber}) already exists...`);
-                const jobCheck = await checkJobExists(orgName, orderNumber, true);
-                if (jobCheck.exists) {
-                    if (jobCheck.hasImages) {
-                        console.log(`⏭️  Skipping job ${jobNumber} - already exists with images`);
-                        skippedJobs.push(jobNumber);
-                        continue;
-                    }
-                    else {
-                        console.log(`🔄 Job ${jobNumber} exists but missing images - will update`);
-                    }
-                }
-                else {
-                    console.log(`🆕 Job ${jobNumber} is new - will process`);
-                }
                 // Extract list data with row-based approach for better reliability
                 const row = await page.$(`tr[data-jobnumber="${jobNumber}"]`);
                 if (!row) {
@@ -673,11 +656,7 @@ async function scrapeJobs(page, currentPageNumber = 1) {
         }
         console.log(`\n📊 Page ${currentPageNumber} Scraping Summary:`);
         console.log(`✅ Successfully processed: ${jobs.length} jobs`);
-        console.log(`⏭️  Skipped (already exist): ${skippedJobs.length} jobs`);
         console.log(`❌ Failed to process: ${failedJobs.length} jobs`);
-        if (skippedJobs.length > 0) {
-            console.log(`Skipped jobs: ${skippedJobs.join(", ")}`);
-        }
         if (failedJobs.length > 0) {
             console.log(`Failed jobs: ${failedJobs.join(", ")}`);
         }
@@ -975,12 +954,127 @@ async function run() {
             })
                 .catch(() => { }),
         ]);
+        // 🔧 CRITICAL FIX: Click "All" filter to show all jobs and enable pagination
+        console.log("🔍 Looking for process filters to enable 'All' view...");
+        try {
+            // Look for common filter selectors that might contain an "All" option
+            const filterSelectors = [
+                '.filter-container .filter-option[data-filter="all"]',
+                ".process-filter .filter-all",
+                ".filters .all-filter",
+                'button:has-text("All")',
+                'a:has-text("All")',
+                ".filter-buttons .all",
+                '[data-filter-value="all"]',
+                ".process-filters .all",
+            ];
+            let allFilterClicked = false;
+            for (const selector of filterSelectors) {
+                try {
+                    const allFilter = await page.$(selector);
+                    if (allFilter) {
+                        console.log(`✅ Found "All" filter with selector: ${selector}`);
+                        await allFilter.click();
+                        console.log("🔄 Clicked 'All' filter, waiting for page to update...");
+                        // Wait for the page to update after clicking the filter
+                        await page.waitForLoadState("networkidle");
+                        await page.waitForTimeout(2000); // Additional wait for any AJAX requests
+                        allFilterClicked = true;
+                        break;
+                    }
+                }
+                catch (error) {
+                    // Continue to next selector if this one doesn't work
+                    continue;
+                }
+            }
+            if (!allFilterClicked) {
+                // Try a more generic approach - look for any element with "All" text that looks like a filter
+                console.log("🔍 Trying generic approach to find 'All' filter...");
+                try {
+                    const allElements = await page.$$("*");
+                    for (const element of allElements) {
+                        const text = await element.textContent();
+                        const tagName = await element.evaluate((el) => el.tagName);
+                        if (text?.trim().toLowerCase() === "all" &&
+                            (tagName === "BUTTON" ||
+                                tagName === "A" ||
+                                tagName === "SPAN" ||
+                                tagName === "DIV")) {
+                            // Check if it looks like a filter (has filter-related classes or parent)
+                            const className = (await element.getAttribute("class")) || "";
+                            const parentHTML = await element.evaluate((el) => el.parentElement?.outerHTML.substring(0, 200) || "");
+                            if (className.includes("filter") ||
+                                className.includes("btn") ||
+                                parentHTML.includes("filter") ||
+                                parentHTML.includes("process")) {
+                                console.log(`✅ Found potential "All" filter: ${tagName} with class "${className}"`);
+                                await element.click();
+                                console.log("🔄 Clicked potential 'All' filter, waiting for page to update...");
+                                await page.waitForLoadState("networkidle");
+                                await page.waitForTimeout(2000);
+                                allFilterClicked = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                catch (error) {
+                    console.warn("⚠️ Error in generic 'All' filter search:", error);
+                }
+            }
+            if (allFilterClicked) {
+                console.log("✅ Successfully clicked 'All' filter - should now show all jobs with pagination");
+                // Extended wait for the page to fully update after filter change
+                console.log("⏳ Waiting for page to fully update after 'All' filter...");
+                await page.waitForLoadState("networkidle");
+                await page.waitForTimeout(3000); // Longer wait for AJAX updates
+                // Re-verify the job count after clicking the filter
+                const jobRowsAfterFilter = await page.$$("#jobStatusListResults tr.js-jobstatus-row");
+                console.log(`📊 Job count after 'All' filter: ${jobRowsAfterFilter.length} jobs`);
+                // Check if pagination is now available
+                const paginationExists = await page.$(".pagination");
+                if (paginationExists) {
+                    const paginationItems = await page.$$(".pagination li.page-item");
+                    console.log(`📄 Pagination now available with ${paginationItems.length} items`);
+                    // Log the actual pagination structure for debugging
+                    const paginationText = await page
+                        .$eval(".pagination", (el) => el.textContent?.trim() || "")
+                        .catch(() => "N/A");
+                    console.log(`📄 Pagination content: "${paginationText}"`);
+                }
+                else {
+                    console.log("📄 No pagination detected (may be single page with all jobs)");
+                }
+                // Additional verification: wait for more jobs to load
+                console.log("⏳ Waiting for job table to stabilize...");
+                await page
+                    .waitForFunction(() => {
+                    const rows = document.querySelectorAll("#jobStatusListResults tr.js-jobstatus-row");
+                    return rows.length > 3; // Should have more than 3 jobs after clicking "All"
+                }, { timeout: 10000 })
+                    .catch(() => {
+                    console.warn("⚠️ Timeout waiting for more jobs to load - proceeding with current job count");
+                });
+                // Final job count check
+                const finalJobRows = await page.$$("#jobStatusListResults tr.js-jobstatus-row");
+                console.log(`📊 Final job count after stabilization: ${finalJobRows.length} jobs`);
+            }
+            else {
+                console.warn("⚠️ Could not find 'All' filter - proceeding with current view");
+                console.warn("⚠️ This may result in limited job visibility and missing pagination");
+            }
+        }
+        catch (error) {
+            console.error("❌ Error while trying to click 'All' filter:", error);
+            console.log("📋 Proceeding with current view...");
+        }
         // Additional wait to ensure JavaScript has finished processing
         await page.waitForFunction(() => {
             const rows = document.querySelectorAll("#jobStatusListResults tr.js-jobstatus-row");
             return (rows.length > 0 &&
                 Array.from(rows).every((row) => row.offsetHeight > 0));
-        }, { timeout: 5000 });
+        }, { timeout: 10000 });
         console.log("Job rows are visible and fully loaded");
         // Debug: Save screenshot and HTML
         await page.screenshot({ path: "debug_jobs_page.png" });

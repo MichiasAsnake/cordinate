@@ -12,6 +12,7 @@ const testJobData: JobDataEnhanced = {
   jobNumber: "50734",
   customer: {
     name: "Duds By Dudes",
+    contact_name: "Derek Anderson",
     emails: ["derek@dudsbydudes.com", "orders@dudsbydudes.com"],
     phones: ["866.963.3837", "555.123.4567"],
     address: {

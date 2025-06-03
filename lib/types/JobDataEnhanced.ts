@@ -39,7 +39,8 @@ interface BaseJobData {
 
 // Enhanced customer contact information
 export interface CustomerContact {
-  name: string;
+  name: string; // Company/organization name
+  contact_name?: string; // Individual contact person name
   emails: string[];
   phones: string[];
   address?: {

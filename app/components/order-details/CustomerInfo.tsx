@@ -41,8 +41,8 @@ export function CustomerInfo({
       <Card className={`w-full ${className}`}>
         <CardHeader className="pb-3">
           <div className="animate-pulse">
-            <div className="h-5 bg-muted rounded w-32 mb-2"></div>
-            <div className="h-3 bg-muted rounded w-20"></div>
+            <div className="h-5 bg-muted rounded w-32 mb-1"></div>
+            <div className="h-3 bg-muted rounded w-24"></div>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
@@ -75,11 +75,18 @@ export function CustomerInfo({
     <Card className={`w-full ${className}`}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ContactIcon className={`w-4 h-4 ${contactColor}`} />
-            <span className="font-semibold truncate">{customer.name}</span>
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <ContactIcon className={`w-4 h-4 ${contactColor} flex-shrink-0`} />
+            <div className="min-w-0 flex-1">
+              <div className="font-semibold truncate">{customer.name}</div>
+              {customer.contact_name && (
+                <div className="text-xs text-muted-foreground truncate">
+                  Contact: {customer.contact_name}
+                </div>
+              )}
+            </div>
           </div>
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className="text-xs flex-shrink-0">
             Customer
           </Badge>
         </CardTitle>
@@ -97,7 +104,9 @@ export function CustomerInfo({
               <a
                 href={`mailto:${primaryEmail}`}
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline cursor-pointer text-xs transition-colors"
-                title={`Send email to ${primaryEmail}`}
+                title={`Send email to ${primaryEmail}${
+                  customer.contact_name ? ` (${customer.contact_name})` : ""
+                }`}
               >
                 {primaryEmail.length > 20
                   ? `${primaryEmail.substring(0, 17)}...`
@@ -120,7 +129,9 @@ export function CustomerInfo({
               <a
                 href={`tel:${primaryPhone}`}
                 className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 hover:underline cursor-pointer text-xs transition-colors"
-                title={`Call ${primaryPhone}`}
+                title={`Call ${primaryPhone}${
+                  customer.contact_name ? ` (${customer.contact_name})` : ""
+                }`}
               >
                 {primaryPhone}
               </a>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { JobHeader } from "@/app/components/order-details/JobHeader";
+import { CustomerInfo } from "@/app/components/order-details/CustomerInfo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { JobDataEnhanced } from "@/lib/types/JobDataEnhanced";
@@ -174,59 +175,6 @@ const testJobData: JobDataEnhanced = {
     },
   ],
 };
-
-// Compact customer info for top placement
-function CompactCustomerInfo() {
-  return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base flex items-center justify-between">
-          {testJobData.customer.name}
-          <Badge variant="outline" className="text-xs">
-            Customer
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">
-              Primary Email
-            </div>
-            <div className="text-blue-600 hover:underline cursor-pointer text-xs">
-              {testJobData.customer.emails[0]}
-            </div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">Phone</div>
-            <div className="text-blue-600 hover:underline cursor-pointer text-xs">
-              {testJobData.customer.phones[0]}
-            </div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">Location</div>
-            <div className="text-xs">
-              {testJobData.customer.address?.city},{" "}
-              {testJobData.customer.address?.state}
-            </div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">
-              Contact Method
-            </div>
-            <div className="text-xs capitalize">
-              {testJobData.customer.contact_preferences?.preferred_method ||
-                "Email"}
-            </div>
-          </div>
-        </div>
-        <Badge variant="outline" className="mt-3 text-xs">
-          Task 4-5: CustomerInfo Component
-        </Badge>
-      </CardContent>
-    </Card>
-  );
-}
 
 function PlaceholderOrderItems() {
   return (
@@ -509,8 +457,7 @@ export default function TestOrderDetailsPage() {
                 Order Details - Test Interface
               </h1>
               <p className="text-muted-foreground">
-                Development preview • Process tags in JobHeader, Customer info
-                in top row
+                Development preview • CustomerInfo component implemented
               </p>
             </div>
             <Badge variant="outline" className="text-sm">
@@ -531,7 +478,7 @@ export default function TestOrderDetailsPage() {
 
           {/* Customer Info (1/3 width) */}
           <div className="xl:col-span-1">
-            <CompactCustomerInfo />
+            <CustomerInfo customer={testJobData.customer} />
           </div>
         </div>
 
@@ -552,7 +499,7 @@ export default function TestOrderDetailsPage() {
         {/* Development Progress - Full Width */}
         <div className="mt-8 p-6 border rounded-lg bg-muted/50">
           <h3 className="font-semibold mb-4">
-            Development Progress • Process Tags in JobHeader
+            Development Progress • CustomerInfo Component Implemented
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div className="space-y-3">
@@ -562,12 +509,12 @@ export default function TestOrderDetailsPage() {
                 <li>• Task 4-2: Data extraction</li>
                 <li>• Task 4-3: Database migration</li>
                 <li>• Task 4-4: JobHeader (with process tags)</li>
+                <li>• Task 4-5: CustomerInfo (click-to-contact)</li>
               </ul>
             </div>
             <div className="space-y-3">
               <h4 className="font-medium text-blue-600">🔄 In Progress</h4>
               <ul className="text-sm space-y-1">
-                <li>• Task 4-5: CustomerInfo (compact top row)</li>
                 <li>• Task 4-6: OrderItems (with photos/prices)</li>
                 <li>• Task 4-7: FilesSection</li>
               </ul>

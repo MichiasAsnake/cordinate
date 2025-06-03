@@ -12,8 +12,8 @@ This document lists all tasks associated with PBI 4.
 | 4-2     | [Implement enhanced job details extraction](./4-2.md)       | Done     | Extract customer contact details and order line items from job details page |
 | 4-3     | [Create database migration for enhanced job data](./4-3.md) | Done     | Migrate existing job records to support new schema fields                   |
 | 4-4     | [Build JobHeader component](./4-4.md)                       | Done     | Display job number, title, status badge, and due date                       |
-| 4-5     | [Build CustomerInfo component](./4-5.md)                    | Review   | Display customer contact information with click-to-contact functionality    |
-| 4-6     | [Build OrderItems component](./4-6.md)                      | Proposed | Display order line items in table format with asset tags and quantities     |
+| 4-5     | [Build CustomerInfo component](./4-5.md)                    | Done     | Display customer contact information with click-to-contact functionality    |
+| 4-6     | [Build OrderItems component](./4-6.md)                      | Agreed   | Display order line items in table format with asset tags and quantities     |
 | 4-7     | [Build ProcessTags component](./4-7.md)                     | Proposed | Display process tags with existing visual styling                           |
 | 4-8     | [Build FilesSection component](./4-8.md)                    | Proposed | Display file attachments and images in grid layout with preview             |
 | 4-9     | [Create OrderDetailsCard container](./4-9.md)               | Proposed | Left column container component integrating all metadata components         |

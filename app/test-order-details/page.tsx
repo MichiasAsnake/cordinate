@@ -52,6 +52,9 @@ const testJobData: JobDataEnhanced = {
         description: "Black XL Hoodie with Logo Embroidery",
         quantity: 25,
         status: "in_progress",
+        unit_cost: 45.0,
+        total_cost: 1125.0,
+        image_url: "/placeholder-hoodie-xl.jpg",
         specifications: {
           size: "XL",
           color: "Black",
@@ -66,6 +69,9 @@ const testJobData: JobDataEnhanced = {
         description: "Black Large Hoodie with Logo Embroidery",
         quantity: 20,
         status: "pending",
+        unit_cost: 45.0,
+        total_cost: 900.0,
+        image_url: "/placeholder-hoodie-lg.jpg",
         specifications: {
           size: "Large",
           color: "Black",
@@ -79,6 +85,9 @@ const testJobData: JobDataEnhanced = {
         description: "Black Medium Hoodie with Logo Embroidery",
         quantity: 15,
         status: "pending",
+        unit_cost: 45.0,
+        total_cost: 675.0,
+        image_url: "/placeholder-hoodie-md.jpg",
         specifications: {
           size: "Medium",
           color: "Black",
@@ -166,98 +175,52 @@ const testJobData: JobDataEnhanced = {
   ],
 };
 
-// Placeholder components for future implementation
-function PlaceholderCustomerInfo() {
+// Compact customer info for top placement
+function CompactCustomerInfo() {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Customer Information</CardTitle>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base flex items-center justify-between">
+          {testJobData.customer.name}
+          <Badge variant="outline" className="text-xs">
+            Customer
+          </Badge>
+        </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4 text-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <div className="font-medium text-muted-foreground mb-1">
-                Company
-              </div>
-              <div className="font-semibold">{testJobData.customer.name}</div>
+      <CardContent className="pt-0">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <div className="text-xs text-muted-foreground mb-1">
+              Primary Email
             </div>
-            <div>
-              <div className="font-medium text-muted-foreground mb-1">
-                Preferred Contact
-              </div>
-              <div className="font-semibold capitalize">
-                {testJobData.customer.contact_preferences?.preferred_method ||
-                  "Email"}
-              </div>
+            <div className="text-blue-600 hover:underline cursor-pointer text-xs">
+              {testJobData.customer.emails[0]}
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <div className="font-medium text-muted-foreground mb-1">
-                Email Addresses
-              </div>
-              <div className="space-y-1">
-                {testJobData.customer.emails.map((email, index) => (
-                  <div
-                    key={index}
-                    className="text-blue-600 hover:underline cursor-pointer"
-                  >
-                    {email}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="font-medium text-muted-foreground mb-1">
-                Phone Numbers
-              </div>
-              <div className="space-y-1">
-                {testJobData.customer.phones.map((phone, index) => (
-                  <div
-                    key={index}
-                    className="text-blue-600 hover:underline cursor-pointer"
-                  >
-                    {phone}
-                  </div>
-                ))}
-              </div>
+          <div>
+            <div className="text-xs text-muted-foreground mb-1">Phone</div>
+            <div className="text-blue-600 hover:underline cursor-pointer text-xs">
+              {testJobData.customer.phones[0]}
             </div>
           </div>
-
-          {testJobData.customer.address && (
-            <div>
-              <div className="font-medium text-muted-foreground mb-1">
-                Shipping Address
-              </div>
-              <div className="bg-muted/30 p-3 rounded-md">
-                <div>{testJobData.customer.address.line1}</div>
-                {testJobData.customer.address.line2 && (
-                  <div>{testJobData.customer.address.line2}</div>
-                )}
-                <div>
-                  {testJobData.customer.address.city},{" "}
-                  {testJobData.customer.address.state}{" "}
-                  {testJobData.customer.address.postal_code}
-                </div>
-                <div>{testJobData.customer.address.country}</div>
-              </div>
+          <div>
+            <div className="text-xs text-muted-foreground mb-1">Location</div>
+            <div className="text-xs">
+              {testJobData.customer.address?.city},{" "}
+              {testJobData.customer.address?.state}
             </div>
-          )}
-
-          {testJobData.customer.contact_preferences?.notes && (
-            <div>
-              <div className="font-medium text-muted-foreground mb-1">
-                Contact Notes
-              </div>
-              <div className="text-sm italic bg-blue-50 dark:bg-blue-950/20 p-2 rounded">
-                {testJobData.customer.contact_preferences.notes}
-              </div>
+          </div>
+          <div>
+            <div className="text-xs text-muted-foreground mb-1">
+              Contact Method
             </div>
-          )}
+            <div className="text-xs capitalize">
+              {testJobData.customer.contact_preferences?.preferred_method ||
+                "Email"}
+            </div>
+          </div>
         </div>
-        <Badge variant="outline" className="mt-4">
+        <Badge variant="outline" className="mt-3 text-xs">
           Task 4-5: CustomerInfo Component
         </Badge>
       </CardContent>
@@ -271,9 +234,14 @@ function PlaceholderOrderItems() {
       <CardHeader>
         <CardTitle className="text-lg flex items-center justify-between">
           Order Line Items
-          <Badge variant="secondary" className="text-xs">
-            {testJobData.order.line_items.length} items
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs">
+              {testJobData.order.line_items.length} items
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              ${(testJobData.order.total_value || 0).toFixed(2)} total
+            </Badge>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -283,100 +251,88 @@ function PlaceholderOrderItems() {
               key={index}
               className="border rounded-lg p-4 hover:bg-muted/30 transition-colors"
             >
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex gap-4">
+                {/* Product Image */}
+                <div className="w-20 h-20 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="text-xs text-center text-muted-foreground">
+                    <div className="text-lg mb-1">👕</div>
+                    <div>{item.specifications?.size || "IMG"}</div>
+                  </div>
+                </div>
+
+                {/* Item Details */}
                 <div className="flex-1">
-                  <div className="font-medium text-base">
-                    {item.description}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    SKU: {item.asset_sku} • Asset: {item.asset_tag} • Quantity:{" "}
-                    {item.quantity}
-                  </div>
-                </div>
-                <Badge
-                  variant={
-                    item.status === "in_progress" ? "default" : "secondary"
-                  }
-                >
-                  {item.status.replace("_", " ")}
-                </Badge>
-              </div>
-
-              {item.specifications && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2">
-                  {Object.entries(item.specifications).map(([key, value]) => (
-                    <div key={key} className="text-xs">
-                      <span className="font-medium text-muted-foreground">
-                        {key}:
-                      </span>
-                      <span className="ml-1">{value}</span>
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <div className="font-medium text-base">
+                        {item.description}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        SKU: {item.asset_sku} • Asset: {item.asset_tag}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                    <Badge
+                      variant={
+                        item.status === "in_progress" ? "default" : "secondary"
+                      }
+                    >
+                      {item.status.replace("_", " ")}
+                    </Badge>
+                  </div>
 
-              {item.comments && (
-                <div className="mt-2 text-xs bg-orange-50 dark:bg-orange-950/20 p-2 rounded border-l-2 border-orange-400">
-                  <span className="font-medium">Note:</span> {item.comments}
+                  {/* Specifications Grid */}
+                  {item.specifications && (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+                      {Object.entries(item.specifications).map(
+                        ([key, value]) => (
+                          <div key={key} className="text-xs">
+                            <span className="font-medium text-muted-foreground">
+                              {key}:
+                            </span>
+                            <span className="ml-1">{value}</span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )}
+
+                  {/* Pricing and Quantity */}
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-4 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Qty:</span>
+                        <span className="ml-1 font-medium">
+                          {item.quantity}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Unit:</span>
+                        <span className="ml-1 font-medium">
+                          ${item.unit_cost?.toFixed(2) || "0.00"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Total:</span>
+                        <span className="ml-1 font-semibold text-green-600">
+                          ${item.total_cost?.toFixed(2) || "0.00"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Comments */}
+                  {item.comments && (
+                    <div className="mt-3 text-xs bg-orange-50 dark:bg-orange-950/20 p-2 rounded border-l-2 border-orange-400">
+                      <span className="font-medium">Note:</span> {item.comments}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
         <Badge variant="outline" className="mt-4">
           Task 4-6: OrderItems Component
-        </Badge>
-      </CardContent>
-    </Card>
-  );
-}
-
-function PlaceholderProcessTags() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg flex items-center justify-between">
-          Process Tags
-          <Badge variant="secondary" className="text-xs">
-            {testJobData.tags.length} processes
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {testJobData.tags.map((tag, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/30 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: tag.color }}
-                ></div>
-                <div>
-                  <div className="font-medium">{tag.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    Code: {tag.code} • Priority: {tag.priority} • Est.{" "}
-                    {tag.estimated_time}min
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge
-                  variant={
-                    tag.status === "in_progress" ? "default" : "secondary"
-                  }
-                  className="text-xs"
-                >
-                  {tag.status.replace("_", " ")}
-                </Badge>
-              </div>
-            </div>
-          ))}
-        </div>
-        <Badge variant="outline" className="mt-4">
-          Task 4-7: ProcessTags Component
         </Badge>
       </CardContent>
     </Card>
@@ -424,7 +380,7 @@ function PlaceholderFilesSection() {
           ))}
         </div>
         <Badge variant="outline" className="mt-4">
-          Task 4-8: FilesSection Component
+          Task 4-7: FilesSection Component
         </Badge>
       </CardContent>
     </Card>
@@ -530,10 +486,10 @@ function PlaceholderCommunicationThread() {
         </div>
 
         <div className="mt-6 space-y-2">
-          <Badge variant="outline">Task 4-11: Comment Component</Badge>
-          <Badge variant="outline">Task 4-12: CommentComposer Component</Badge>
+          <Badge variant="outline">Task 4-8: Comment Component</Badge>
+          <Badge variant="outline">Task 4-9: CommentComposer Component</Badge>
           <Badge variant="outline">
-            Task 4-13: CommunicationThread Component
+            Task 4-10: CommunicationThread Component
           </Badge>
         </div>
       </CardContent>
@@ -553,7 +509,8 @@ export default function TestOrderDetailsPage() {
                 Order Details - Test Interface
               </h1>
               <p className="text-muted-foreground">
-                Development preview of PBI 4 components • Full width layout
+                Development preview • Process tags in JobHeader, Customer info
+                in top row
               </p>
             </div>
             <Badge variant="outline" className="text-sm">
@@ -565,18 +522,24 @@ export default function TestOrderDetailsPage() {
 
       {/* Main Content - Full Width */}
       <div className="w-full px-4 py-6">
-        {/* Job Header - Completed ✅ */}
-        <div className="mb-6">
-          <JobHeader jobData={testJobData} />
+        {/* Top Row - Job Header with Process Tags and Customer Info */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+          {/* Job Header with Process Tags (2/3 width) */}
+          <div className="xl:col-span-2">
+            <JobHeader jobData={testJobData} />
+          </div>
+
+          {/* Customer Info (1/3 width) */}
+          <div className="xl:col-span-1">
+            <CompactCustomerInfo />
+          </div>
         </div>
 
         {/* Two Column Layout - Full Width */}
         <div className="grid grid-cols-1 xl:grid-cols-7 gap-6">
           {/* Left Column - Order Metadata (3/7 ≈ 43%) */}
           <div className="xl:col-span-3 space-y-6">
-            <PlaceholderCustomerInfo />
             <PlaceholderOrderItems />
-            <PlaceholderProcessTags />
             <PlaceholderFilesSection />
           </div>
 
@@ -589,7 +552,7 @@ export default function TestOrderDetailsPage() {
         {/* Development Progress - Full Width */}
         <div className="mt-8 p-6 border rounded-lg bg-muted/50">
           <h3 className="font-semibold mb-4">
-            Development Progress • Full Width Layout
+            Development Progress • Process Tags in JobHeader
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div className="space-y-3">
@@ -598,34 +561,35 @@ export default function TestOrderDetailsPage() {
                 <li>• Task 4-1: Enhanced interfaces</li>
                 <li>• Task 4-2: Data extraction</li>
                 <li>• Task 4-3: Database migration</li>
-                <li>• Task 4-4: JobHeader component</li>
+                <li>• Task 4-4: JobHeader (with process tags)</li>
               </ul>
             </div>
             <div className="space-y-3">
               <h4 className="font-medium text-blue-600">🔄 In Progress</h4>
               <ul className="text-sm space-y-1">
-                <li>• Task 4-5: CustomerInfo</li>
-                <li>• Task 4-6: OrderItems</li>
-                <li>• Task 4-7: ProcessTags</li>
-                <li>• Task 4-8: FilesSection</li>
+                <li>• Task 4-5: CustomerInfo (compact top row)</li>
+                <li>• Task 4-6: OrderItems (with photos/prices)</li>
+                <li>• Task 4-7: FilesSection</li>
               </ul>
             </div>
             <div className="space-y-3">
               <h4 className="font-medium text-orange-600">⏳ Upcoming</h4>
               <ul className="text-sm space-y-1">
-                <li>• Task 4-9: OrderDetailsCard</li>
-                <li>• Task 4-10: Comments schema</li>
-                <li>• Task 4-11: Comment component</li>
-                <li>• Task 4-12: CommentComposer</li>
+                <li>• Task 4-8: Comment component</li>
+                <li>• Task 4-9: CommentComposer</li>
+                <li>• Task 4-10: CommunicationThread</li>
+                <li>• Task 4-11: Comments schema</li>
               </ul>
             </div>
             <div className="space-y-3">
               <h4 className="font-medium text-purple-600">🔮 Future</h4>
               <ul className="text-sm space-y-1">
-                <li>• Task 4-13: CommunicationThread</li>
-                <li>• Task 4-14: Comment API</li>
-                <li>• Task 4-15: Page layout</li>
-                <li>• Task 4-16+: Advanced features</li>
+                <li>• Task 4-12: Comment API</li>
+                <li>• Task 4-13: Page layout</li>
+                <li>• Task 4-14+: Advanced features</li>
+                <li className="text-muted-foreground">
+                  • Process tags: Integrated in JobHeader ✓
+                </li>
               </ul>
             </div>
           </div>

@@ -201,19 +201,37 @@ export function JobHeader({
                 $
                 {jobData.order.total_value.toLocaleString("en-US", {
                   minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
                 })}
               </div>
             )}
           </div>
         </div>
 
-        {/* Order description if available */}
-        {jobData.order.description && (
-          <div className="mt-4 pt-4 border-t border-border">
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {jobData.order.description}
-            </p>
+        {/* Process Tags Row */}
+        {jobData.tags && jobData.tags.length > 0 && (
+          <div className="mt-4 pt-4 border-t">
+            <div className="flex flex-wrap gap-2">
+              {jobData.tags.map((tag, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 px-3 py-1.5 border rounded-full hover:bg-muted/30 transition-colors text-sm"
+                >
+                  <div
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ backgroundColor: tag.color }}
+                  ></div>
+                  <span className="font-medium">{tag.name}</span>
+                  <Badge
+                    variant={
+                      tag.status === "in_progress" ? "default" : "secondary"
+                    }
+                    className="text-xs h-4"
+                  >
+                    {tag.status.replace("_", " ")}
+                  </Badge>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </CardHeader>

@@ -71,6 +71,20 @@
       "when": 1748930687598,
       "tag": "0009_confused_rage",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1748936602429,
+      "tag": "0010_little_peter_quill",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1748936936828,
+      "tag": "0011_complex_ben_parker",
+      "breakpoints": true
     }
   ]
 }

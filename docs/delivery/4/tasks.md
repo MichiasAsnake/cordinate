@@ -17,8 +17,8 @@ This document lists all tasks associated with PBI 4.
 | 4-7     | [Build ProcessTags component](./4-7.md)                     | Proposed | Display process tags with existing visual styling                           |
 | 4-8     | [Build FilesSection component](./4-8.md)                    | Proposed | Display file attachments and images in grid layout with preview             |
 | 4-9     | [Create OrderDetailsCard container](./4-9.md)               | Proposed | Left column container component integrating all metadata components         |
-| 4-10    | [Create comments database schema](./4-10.md)                | Agreed   | Database tables for comments, file attachments, and mentions                |
-| 4-11    | [Build Comment component](./4-11.md)                        | Proposed | Individual comment display with author, timestamp, and content              |
+| 4-10    | [Create comments database schema](./4-10.md)                | Done     | Database tables for comments, file attachments, and mentions                |
+| 4-11    | [Build Comment component](./4-11.md)                        | Review   | Individual comment display with author, timestamp, and content              |
 | 4-12    | [Build CommentComposer component](./4-12.md)                | Proposed | Rich text input for creating new comments                                   |
 | 4-13    | [Build CommunicationThread container](./4-13.md)            | Proposed | Right column container for comments and thread management                   |
 | 4-14    | [Implement comment API endpoints](./4-14.md)                | Proposed | CRUD operations for job comments                                            |

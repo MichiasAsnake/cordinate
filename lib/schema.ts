@@ -292,23 +292,35 @@ export const job_comments = pgTable(
   {
     id: serial("id").primaryKey(),
     job_number: varchar("job_number", { length: 50 }).notNull(),
+    order_id: integer("order_id").references(() => orders.id, {
+      onDelete: "cascade",
+    }),
     user_id: integer("user_id").references(() => users.id, {
       onDelete: "set null",
     }),
     content: text("content").notNull(),
     content_type: varchar("content_type", { length: 20 }).default("text"),
+    comment_type: varchar("comment_type", { length: 20 }).default("comment"),
+    parent_comment_id: integer("parent_comment_id"),
     reply_to_id: integer("reply_to_id"),
     is_pinned: boolean("is_pinned").default(false),
     is_internal: boolean("is_internal").default(true),
+    deleted_at: timestamp("deleted_at", { withTimezone: true }),
     created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
   },
   (table) => {
     return {
       jobNumberIdx: index("job_comments_job_number_idx").on(table.job_number),
+      orderIdIdx: index("job_comments_order_id_idx").on(table.order_id),
       userIdIdx: index("job_comments_user_id_idx").on(table.user_id),
+      parentCommentIdx: index("job_comments_parent_id_idx").on(
+        table.parent_comment_id
+      ),
       pinnedIdx: index("job_comments_pinned_idx").on(table.is_pinned),
+      typeIdx: index("job_comments_type_idx").on(table.comment_type),
       createdAtIdx: index("job_comments_created_at_idx").on(table.created_at),
+      deletedAtIdx: index("job_comments_deleted_at_idx").on(table.deleted_at),
     };
   }
 );
@@ -321,14 +333,29 @@ export const comment_files = pgTable(
       onDelete: "cascade",
     }),
     file_name: varchar("file_name", { length: 255 }).notNull(),
+    filename: varchar("filename", { length: 255 }).notNull(),
     file_type: varchar("file_type", { length: 50 }).notNull(),
     file_url: text("file_url").notNull(),
+    storage_path: text("storage_path"),
+    thumbnail_url: text("thumbnail_url"),
     file_size: integer("file_size"),
+    uploaded_by_user_id: integer("uploaded_by_user_id").references(
+      () => users.id,
+      {
+        onDelete: "set null",
+      }
+    ),
+    is_active: boolean("is_active").default(true),
+    uploaded_at: timestamp("uploaded_at", { withTimezone: true }).defaultNow(),
     created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
   },
   (table) => {
     return {
       commentIdIdx: index("comment_files_comment_id_idx").on(table.comment_id),
+      activeIdx: index("comment_files_active_idx").on(table.is_active),
+      uploadedByIdx: index("comment_files_uploaded_by_idx").on(
+        table.uploaded_by_user_id
+      ),
     };
   }
 );
@@ -340,10 +367,14 @@ export const comment_mentions = pgTable(
     comment_id: integer("comment_id").references(() => job_comments.id, {
       onDelete: "cascade",
     }),
-    user_id: integer("user_id").references(() => users.id, {
+    mentioned_user_id: integer("mentioned_user_id").references(() => users.id, {
       onDelete: "cascade",
     }),
+    mention_type: varchar("mention_type", { length: 20 }).default("direct"),
     is_read: boolean("is_read").default(false),
+    notification_sent_at: timestamp("notification_sent_at", {
+      withTimezone: true,
+    }),
     created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
   },
   (table) => {
@@ -351,8 +382,35 @@ export const comment_mentions = pgTable(
       commentIdIdx: index("comment_mentions_comment_id_idx").on(
         table.comment_id
       ),
-      userIdIdx: index("comment_mentions_user_id_idx").on(table.user_id),
+      mentionedUserIdx: index("comment_mentions_mentioned_user_idx").on(
+        table.mentioned_user_id
+      ),
       readIdx: index("comment_mentions_read_idx").on(table.is_read),
+      typeIdx: index("comment_mentions_type_idx").on(table.mention_type),
+    };
+  }
+);
+
+export const comment_reactions = pgTable(
+  "comment_reactions",
+  {
+    id: serial("id").primaryKey(),
+    comment_id: integer("comment_id").references(() => job_comments.id, {
+      onDelete: "cascade",
+    }),
+    user_id: integer("user_id").references(() => users.id, {
+      onDelete: "cascade",
+    }),
+    reaction_type: varchar("reaction_type", { length: 20 }).notNull(),
+    created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => {
+    return {
+      commentIdIdx: index("comment_reactions_comment_id_idx").on(
+        table.comment_id
+      ),
+      userIdIdx: index("comment_reactions_user_id_idx").on(table.user_id),
+      typeIdx: index("comment_reactions_type_idx").on(table.reaction_type),
     };
   }
 );

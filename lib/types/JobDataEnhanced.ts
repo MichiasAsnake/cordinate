@@ -6,6 +6,14 @@
  * order line items, file attachments, and communication foundation.
  */
 
+import type {
+  JobComment,
+  CommentWithThread,
+  CommentAttachment,
+  CommentReaction,
+  CommentMention,
+} from "./Comments";
+
 // Base types from current scrape.ts
 interface BaseJobData {
   jobNumber: string;
@@ -181,6 +189,15 @@ export interface JobDataEnhanced
 
   // Job timeline and history (includes existing jobDescriptions)
   timeline: JobTimelineEntry[];
+
+  // Enhanced comments system
+  comments?: CommentWithThread[];
+  comment_stats?: {
+    total_comments: number;
+    total_threads: number;
+    unread_mentions: number;
+    recent_activity: string;
+  };
 
   // Legacy job descriptions (for backward compatibility)
   jobDescriptions: Array<{

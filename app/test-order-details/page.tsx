@@ -4,9 +4,11 @@ import React from "react";
 import { JobHeader } from "@/app/components/order-details/JobHeader";
 import { CustomerInfo } from "@/app/components/order-details/CustomerInfo";
 import { OrderItems } from "@/app/components/order-details/OrderItems";
+import { Comment } from "@/app/components/order-details/Comment";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { JobDataEnhanced } from "@/lib/types/JobDataEnhanced";
+import { CommentWithThread } from "@/lib/types/Comments";
 
 // Comprehensive test data
 const testJobData: JobDataEnhanced = {
@@ -178,6 +180,165 @@ const testJobData: JobDataEnhanced = {
   ],
 };
 
+// Mock comment data for testing Comment component
+const mockComments: CommentWithThread[] = [
+  {
+    id: 1,
+    job_number: "50734",
+    order_id: 1,
+    user_id: 1,
+    content:
+      "Hi team! I've uploaded the logo files for this project. The client wants the embroidery on the front left chest to be exactly 3 inches wide. Please make sure to use the vector file for the best quality.\n\nLet me know if you need any clarification on the placement or sizing!",
+    content_type: "text",
+    comment_type: "comment",
+    is_pinned: false,
+    is_internal: true,
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+    updated_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    author: {
+      id: 1,
+      name: "Sarah Johnson",
+      email: "sarah@decopress.com",
+      role: "Project Manager",
+    },
+    reply_count: 2,
+    attachments: [
+      {
+        id: 1,
+        comment_id: 1,
+        file_name: "company-logo-vector.ai",
+        filename: "company-logo-vector.ai",
+        file_type: "application/illustrator",
+        file_url: "/files/company-logo-vector.ai",
+        file_size: 245760, // 240KB
+        is_active: true,
+        uploaded_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        id: 2,
+        comment_id: 1,
+        file_name: "placement-reference.jpg",
+        filename: "placement-reference.jpg",
+        file_type: "image/jpeg",
+        file_url: "/files/placement-reference.jpg",
+        thumbnail_url: "/files/thumbnails/placement-reference.jpg",
+        file_size: 156672, // 153KB
+        is_active: true,
+        uploaded_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+      },
+    ],
+    reactions: [
+      {
+        id: 1,
+        comment_id: 1,
+        user_id: 2,
+        reaction_type: "thumbs_up",
+        created_at: new Date(Date.now() - 1.5 * 60 * 60 * 1000).toISOString(),
+        user: { id: 2, name: "Mike Chen", email: "mike@decopress.com" },
+      },
+      {
+        id: 2,
+        comment_id: 1,
+        user_id: 3,
+        reaction_type: "thumbs_up",
+        created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+        user: { id: 3, name: "Lisa Rodriguez", email: "lisa@decopress.com" },
+      },
+    ],
+    reaction_counts: {
+      like: 0,
+      thumbs_up: 2,
+      thumbs_down: 0,
+      heart: 0,
+      laugh: 0,
+    },
+  },
+  {
+    id: 2,
+    job_number: "50734",
+    order_id: 1,
+    user_id: 2,
+    content:
+      "Got it! I'll start with the XL hoodies first since those are priority. The logo specs look perfect.",
+    content_type: "text",
+    comment_type: "comment",
+    parent_comment_id: 1,
+    is_pinned: false,
+    is_internal: true,
+    created_at: new Date(Date.now() - 1.5 * 60 * 60 * 1000).toISOString(), // 1.5 hours ago
+    updated_at: new Date(Date.now() - 1.5 * 60 * 60 * 1000).toISOString(),
+    author: {
+      id: 2,
+      name: "Mike Chen",
+      email: "mike@decopress.com",
+      role: "Production Lead",
+    },
+    reply_count: 0,
+  },
+  {
+    id: 3,
+    job_number: "50734",
+    order_id: 1,
+    user_id: 4,
+    content:
+      "Status update: All XL hoodies have been embroidered and are ready for quality check. Moving to medium sizes next.",
+    content_type: "text",
+    comment_type: "status_update",
+    is_pinned: true,
+    is_internal: true,
+    created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 minutes ago
+    updated_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+    author: {
+      id: 4,
+      name: "Alex Thompson",
+      email: "alex@decopress.com",
+      role: "Embroidery Specialist",
+    },
+    reply_count: 0,
+    reactions: [
+      {
+        id: 3,
+        comment_id: 3,
+        user_id: 1,
+        reaction_type: "heart",
+        created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+        user: { id: 1, name: "Sarah Johnson", email: "sarah@decopress.com" },
+      },
+    ],
+    reaction_counts: {
+      like: 0,
+      thumbs_up: 0,
+      thumbs_down: 0,
+      heart: 1,
+      laugh: 0,
+    },
+  },
+  {
+    id: 4,
+    job_number: "50734",
+    order_id: 1,
+    user_id: 3,
+    content:
+      "Perfect timing! I'll have these quality checked and packaged by end of day.",
+    content_type: "text",
+    comment_type: "comment",
+    parent_comment_id: 1,
+    is_pinned: false,
+    is_internal: true,
+    created_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(), // 15 minutes ago
+    updated_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+    author: {
+      id: 3,
+      name: "Lisa Rodriguez",
+      email: "lisa@decopress.com",
+      role: "Quality Control",
+    },
+    reply_count: 0,
+  },
+];
+
 function PlaceholderFilesSection() {
   return (
     <Card>
@@ -226,110 +387,90 @@ function PlaceholderFilesSection() {
   );
 }
 
-function PlaceholderCommunicationThread() {
+function CommunicationThreadPreview() {
+  const currentUserId = 1; // Simulate logged-in user
+
+  const handleReply = (commentId: number) => {
+    console.log("Reply to comment:", commentId);
+  };
+
+  const handleEdit = (commentId: number) => {
+    console.log("Edit comment:", commentId);
+  };
+
+  const handleDelete = (commentId: number) => {
+    console.log("Delete comment:", commentId);
+  };
+
+  const handlePin = (commentId: number) => {
+    console.log("Toggle pin comment:", commentId);
+  };
+
+  const handleReaction = (commentId: number, reactionType: any) => {
+    console.log("Add reaction:", commentId, reactionType);
+  };
+
+  // Separate parent comments from replies
+  const parentComments = mockComments.filter(
+    (comment) => !comment.parent_comment_id
+  );
+  const replyComments = mockComments.filter(
+    (comment) => comment.parent_comment_id
+  );
+
   return (
-    <Card className="h-full">
+    <Card className="h-fit">
       <CardHeader>
-        <CardTitle className="text-lg flex items-center justify-between">
-          Communication Thread
-          <Badge variant="secondary" className="text-xs">
-            {testJobData.timeline.length} events
-          </Badge>
-        </CardTitle>
+        <CardTitle className="text-lg">Communication Thread</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Internal team discussion and updates
+        </p>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4 max-h-96 overflow-y-auto">
-          {/* Timeline Events */}
-          {testJobData.timeline.map((event, index) => (
-            <div key={index} className="flex gap-3 p-4 border rounded-lg">
-              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-xs font-bold">
-                  {event.user_name?.charAt(0) || "?"}
-                </span>
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start mb-1">
-                  <div className="font-medium text-sm">
-                    {event.user_name || "System"}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {new Date(event.timestamp).toLocaleDateString()}{" "}
-                    {new Date(event.timestamp).toLocaleTimeString()}
-                  </div>
-                </div>
-                <div className="text-sm">{event.description}</div>
-                <Badge variant="outline" className="text-xs mt-1">
-                  {event.event_type.replace("_", " ")}
-                </Badge>
-              </div>
-            </div>
-          ))}
+        <div className="space-y-4">
+          {parentComments.map((comment) => {
+            const replies = replyComments.filter(
+              (reply) => reply.parent_comment_id === comment.id
+            );
 
-          {/* Sample Comments */}
-          <div className="flex gap-3 p-4 border rounded-lg bg-green-50 dark:bg-green-950/20">
-            <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-bold">S</span>
-            </div>
-            <div className="flex-1">
-              <div className="flex justify-between items-start mb-1">
-                <div className="font-medium text-sm">Sarah Johnson</div>
-                <div className="text-xs text-muted-foreground">2 hours ago</div>
+            return (
+              <div key={comment.id} className="space-y-3">
+                {/* Parent Comment */}
+                <Comment
+                  comment={comment}
+                  currentUserId={currentUserId}
+                  onReply={handleReply}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onPin={handlePin}
+                  onReaction={handleReaction}
+                />
+
+                {/* Replies */}
+                {replies.map((reply) => (
+                  <Comment
+                    key={reply.id}
+                    comment={reply}
+                    currentUserId={currentUserId}
+                    isThreaded={true}
+                    threadLevel={1}
+                    onReply={handleReply}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onPin={handlePin}
+                    onReaction={handleReaction}
+                  />
+                ))}
               </div>
-              <div className="text-sm">
-                Started production on XL hoodies. Logo placement looks great!
-                The embroidery team is making excellent progress and should
-                complete this batch by end of day.
-              </div>
-              <div className="flex gap-2 mt-2">
-                <Badge variant="outline" className="text-xs">
-                  production update
-                </Badge>
-                <Badge variant="outline" className="text-xs">
-                  internal
-                </Badge>
-              </div>
-            </div>
+            );
+          })}
+
+          {/* Placeholder for comment composer */}
+          <div className="border-2 border-dashed border-muted rounded-lg p-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              💬 Comment composer component will be implemented in task 4-12
+            </p>
           </div>
-
-          <div className="flex gap-3 p-4 border rounded-lg bg-blue-50 dark:bg-blue-950/20">
-            <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-bold">D</span>
-            </div>
-            <div className="flex-1">
-              <div className="flex justify-between items-start mb-1">
-                <div className="font-medium text-sm">Derek Anderson</div>
-                <div className="text-xs text-muted-foreground">1 day ago</div>
-              </div>
-              <div className="text-sm">
-                Uploaded final logo files. Please confirm placement before
-                starting production. The back graphic should be centered 4
-                inches from the top seam.
-              </div>
-              <div className="flex gap-2 mt-2">
-                <Badge variant="outline" className="text-xs">
-                  customer message
-                </Badge>
-                <Badge variant="outline" className="text-xs">
-                  file upload
-                </Badge>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Comment Composer Preview */}
-        <div className="mt-6 p-4 border-2 border-dashed border-muted rounded-lg">
-          <div className="text-sm text-muted-foreground italic text-center">
-            Comment composer will be here...
-          </div>
-        </div>
-
-        <div className="mt-6 space-y-2">
-          <Badge variant="outline">Task 4-8: Comment Component</Badge>
-          <Badge variant="outline">Task 4-9: CommentComposer Component</Badge>
-          <Badge variant="outline">
-            Task 4-10: CommunicationThread Component
-          </Badge>
         </div>
       </CardContent>
     </Card>
@@ -383,7 +524,7 @@ export default function TestOrderDetailsPage() {
 
           {/* Right Column - Communication Thread (4/7 ≈ 57%) */}
           <div className="xl:col-span-4">
-            <PlaceholderCommunicationThread />
+            <CommunicationThreadPreview />
           </div>
         </div>
 
